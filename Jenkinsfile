@@ -53,9 +53,9 @@ pipeline {
       steps {
         echo '🚀 Déploiement avec Docker Compose...'
         sh '''
-          docker compose down || true
-          sleep 5
-          docker compose up -d
+          docker compose stop api mongodb nginx || true
+          sleep 3
+          docker compose up -d api mongodb nginx
           sleep 20
           docker compose ps
           curl -f http://localhost/health && echo "✅ API est healthy" || true
