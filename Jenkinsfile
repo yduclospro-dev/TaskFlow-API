@@ -1,11 +1,8 @@
 pipeline {
   agent any
 
-  tools {
-    nodejs 'NodeJS-18'
-  }
-
   options {
+    skipDefaultCheckout(true)
     timeout(time: 30, unit: 'MINUTES')
     timestamps()
     buildDiscarder(logRotator(numToKeepStr: '10'))
