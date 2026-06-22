@@ -54,4 +54,44 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({ error: 'invalid id' });
+    }
+
+    const { title, description, status } = req.body || {};
+    const update = {};
+
+    if (title !== undefined) {
+      if (typeof title !== 'string' || title.trim() === '') {
+        return res.status(400).json({ error: 'title must be a non-empty string' });
+      }
+      update.title = title.trim();
+    }
+    if (description !== undefined) update.description = description;
+    if (status !== undefined) update.status = status;
+
+    if (Object.keys(update).length === 0) {
+      return res.status(400).json({ error: 'no fields to update' });
+    }
+
+    const task = await Task.findByIdAndUpdate(req.params.id, update, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!task) {
+      return res.status(404).json({ error: 'task not found' });
+    }
+
+    return res.status(200).json(task);
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ error: err.message });
+    }
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
