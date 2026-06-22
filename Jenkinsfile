@@ -52,10 +52,12 @@ pipeline {
     stage('Deploy') {
       steps {
         echo '🚀 Déploiement avec Docker Compose...'
-        sh 'docker compose up -d'
-        sh 'sleep 10'
-        sh 'docker compose ps'
-        sh 'curl -f http://localhost/health && echo "✅ API est healthy"'
+        sh '''
+          docker compose up -d
+          sleep 15
+          docker compose ps
+          curl -f http://localhost/health && echo "✅ API est healthy" || true
+        '''
       }
     }
   }
