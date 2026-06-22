@@ -17,9 +17,11 @@ const start = async () => {
   });
 };
 
-start().catch((err) => {
-  process.stderr.write(`${err.stack}\n`);
-  process.exit(1);
-});
+if (require.main === module) {
+  start().catch((err) => {
+    process.stderr.write(`${err.stack}\n`);
+    process.exit(1);
+  });
+}
 
 module.exports = app;
