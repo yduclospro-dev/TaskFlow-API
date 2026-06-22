@@ -53,8 +53,10 @@ pipeline {
       steps {
         echo '🚀 Déploiement avec Docker Compose...'
         sh '''
+          docker compose down || true
+          sleep 5
           docker compose up -d
-          sleep 15
+          sleep 20
           docker compose ps
           curl -f http://localhost/health && echo "✅ API est healthy" || true
         '''
