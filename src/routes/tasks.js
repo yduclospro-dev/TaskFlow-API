@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Task = require('../models/Task');
 
 const router = express.Router();
@@ -31,6 +32,24 @@ router.post('/', async (req, res) => {
     if (err.name === 'ValidationError') {
       return res.status(400).json({ error: err.message });
     }
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).json({ error: 'invalid id' });
+    }
+
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({ error: 'task not found' });
+    }
+
+    return res.status(200).json(task);
+  } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 });
