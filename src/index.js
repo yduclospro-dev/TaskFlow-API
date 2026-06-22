@@ -6,6 +6,7 @@ const app = express();
 
 app.use(express.json());
 app.use('/health', require('./routes/health'));
+app.use('/api/tasks', require('./routes/tasks'));
 
 const PORT = process.env.PORT || 3000;
 
