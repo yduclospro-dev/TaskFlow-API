@@ -7,7 +7,11 @@ let app;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
-  await mongoose.connect(mongoServer.getUri());
+  const mongoUri = mongoServer.getUri();
+  await mongoose.connect(mongoUri);
+  
+  // Clear the require cache to ensure fresh module load
+  delete require.cache[require.resolve('../../src/index')];
   app = require('../../src/index');
 });
 
