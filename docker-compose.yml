@@ -53,7 +53,9 @@ services:
       - taskflow_net
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     container_name: taskflow-jenkins
     restart: unless-stopped
     ports:
