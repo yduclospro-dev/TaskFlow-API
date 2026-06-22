@@ -37,7 +37,7 @@ pipeline {
     stage('Test') {
       steps {
         echo '🧪 Exécution des tests Jest avec couverture...'
-        sh 'npm test -- --coverage --watchAll=false'
+        sh 'npm test -- --coverage'
       }
     }
 
@@ -66,12 +66,7 @@ pipeline {
   post {
     always {
       echo '📊 Rapport de couverture des tests:'
-      sh '''
-        if [ -f coverage/coverage-summary.json ]; then
-          echo "📈 Résumé de couverture:"
-          cat coverage/coverage-summary.json | grep -E "lines|statements|functions|branches" || true
-        fi
-      '''
+      sh 'npm test -- --coverage --passWithNoTests 2>&1 | grep -E "Statements|Branches|Functions|Lines|TOTAL" || true'
     }
 
     success {
