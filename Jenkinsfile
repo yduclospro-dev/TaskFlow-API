@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  tools {
+    nodejs 'NodeJS-18'
+  }
+
   options {
     timeout(time: 30, unit: 'MINUTES')
     timestamps()
