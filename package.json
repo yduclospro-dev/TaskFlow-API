@@ -1,0 +1,27 @@
+{
+  "name": "taskflow-api",
+  "version": "1.0.0",
+  "description": "TaskFlow API - Task management system",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": ["tasks", "api"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.3.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.45.0",
+    "nodemon": "^3.0.1",
+    "jest": "^29.6.2"
+  }
+}
