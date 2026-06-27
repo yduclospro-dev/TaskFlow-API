@@ -60,7 +60,23 @@ pipeline {
           docker compose stop api mongodb nginx || true
           docker compose up -d --build api mongodb nginx
           docker compose ps
-          curl -f http://localhost/health && echo "✅ API est healthy" || true
+
+          # Jenkins runs inside a container, so localhost is not the host-published port 80.
+          # Probe the nginx service on the Docker network with retries.
+          for i in $(seq 1 20); do
+            if curl -fsS http://nginx/health >/dev/null; then
+              echo "✅ API est healthy via Nginx"
+              exit 0
+            fi
+
+            echo "⏳ Health-check Nginx/API en attente ($i/20)..."
+            sleep 3
+          done
+
+          echo "❌ Health-check Nginx/API en échec"
+          docker compose ps
+          docker compose logs --tail=80 api nginx
+          exit 1
         '''
       }
     }
