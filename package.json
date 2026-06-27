@@ -19,7 +19,8 @@
   "license": "ISC",
   "jest": {
     "testEnvironment": "node",
-    "testTimeout": 60000
+    "testTimeout": 60000,
+    "coverageReporters": ["text", "lcov", "json-summary"]
   },
   "dependencies": {
     "dotenv": "^16.3.1",

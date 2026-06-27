@@ -85,7 +85,19 @@ pipeline {
   post {
     always {
       echo '📊 Rapport de couverture des tests:'
-      sh 'npm test -- --coverage --passWithNoTests 2>&1 | grep -E "Statements|Branches|Functions|Lines|TOTAL" || true'
+      sh '''
+        if [ -f coverage/coverage-summary.json ]; then
+          node -e "
+            const c = require('./coverage/coverage-summary.json').total;
+            console.log('Statements : ' + c.statements.pct + '%');
+            console.log('Branches   : ' + c.branches.pct + '%');
+            console.log('Functions  : ' + c.functions.pct + '%');
+            console.log('Lines      : ' + c.lines.pct + '%');
+          "
+        else
+          echo 'Pas de rapport de couverture disponible'
+        fi
+      '''
     }
 
     success {
